@@ -32,8 +32,8 @@ TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
 
 # Prompt template
 TOPIC_PROMPT = """
-Latest articles from this past week {date} in the {sector} sector. Focus on {topics}. 
-Include news about the latest AI models, breakthroughs, and applications in various industries.
+Latest articles from this past day {date} in the {sector} sector. Focus on {topics}. 
+Include news about the latest news, breakthroughs, and applications in various industries.
 Provide a overview of the articles and their implications for their stocks and global markets.
 The articles should be from reputable sources and include a summary of the key points.
 """
@@ -44,22 +44,22 @@ SECTORS = {
         "name": "Technology",
         "topics": "AI, machine learning, semiconductors, cloud computing, cybersecurity, fintech"
     },
-    "healthcare": {
-        "name": "Healthcare", 
-        "topics": "biotech, pharmaceuticals, medical devices, AI in healthcare, drug development"
-    },
+    # "healthcare": {
+    #     "name": "Healthcare", 
+    #     "topics": "biotech, pharmaceuticals, medical devices, AI in healthcare, drug development"
+    # },
     "finance": {
         "name": "Finance",
         "topics": "fintech, digital banking, cryptocurrency, blockchain, investment trends"
     },
-    "energy": {
-        "name": "Energy",
-        "topics": "renewable energy, electric vehicles, battery technology, clean energy"
-    },
-    "automotive": {
-        "name": "Automotive",
-        "topics": "electric vehicles, autonomous driving, automotive technology, EV charging"
-    }
+    # "energy": {
+    #     "name": "Energy",
+    #     "topics": "renewable energy, electric vehicles, battery technology, clean energy"
+    # },
+    # "automotive": {
+    #     "name": "Automotive",
+    #     "topics": "electric vehicles, autonomous driving, automotive technology, EV charging"
+    # }
 }
 
 def get_current_date():

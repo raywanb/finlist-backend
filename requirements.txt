@@ -7,4 +7,5 @@ python-multipart
 openai
 email-validator
 gpt-researcher
-requests>=2.25.1 
+requests>=2.25.1
+schedule 

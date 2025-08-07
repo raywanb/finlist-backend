@@ -99,6 +99,9 @@ python test_crawler.py single
 # Test specific sector
 python test_crawler.py sector healthcare
 python test_crawler.py sector finance
+
+# Test scheduler functionality
+python test_crawler.py scheduler
 ```
 
 ### Test Individual Sectors
@@ -118,12 +121,12 @@ python crawler.py --test --all-sectors
 python crawler.py --test --sector energy
 ```
 
-## 🔄 Continuous Operation
+## 🔄 Scheduled Operation
 
-### Default Behavior (24-hour intervals)
-The crawler now runs once per day (every 24 hours) and processes all sectors by default.
+### Default Behavior (Daily at 9 AM)
+The crawler now runs once per day at 9:00 AM and processes all sectors by default.
 
-### Start Continuous Crawling
+### Start Scheduled Crawling
 ```bash
 # Default: technology sector, every hour
 python crawler.py

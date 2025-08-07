@@ -39,6 +39,22 @@ async def test_specific_sector(sector: str):
     await crawler.run_crawling_cycle(sector)
     print(f"✅ {sector} sector test complete!")
 
+def test_scheduler():
+    """Test the scheduler functionality"""
+    print("🧪 Testing scheduler functionality...")
+    crawler = ArticleCrawler()
+    
+    # Test scheduler with a short delay
+    print("📅 Starting scheduler test (will run in 10 seconds)...")
+    crawler.start_scheduler("09:00", "technology", False)
+    
+    # Let it run for a bit to test
+    import time
+    time.sleep(15)
+    
+    crawler.stop_scheduler()
+    print("✅ Scheduler test complete!")
+
 def print_usage():
     """Print usage information"""
     print("🚀 Article Crawler Test Script")
@@ -46,6 +62,7 @@ def print_usage():
     print("  python test_crawler.py single          # Test single sector (technology)")
     print("  python test_crawler.py all             # Test all sectors")
     print("  python test_crawler.py sector <name>   # Test specific sector")
+    print("  python test_crawler.py scheduler       # Test scheduler functionality")
     print("\nAvailable sectors:")
     for key, value in SECTORS.items():
         print(f"  - {key}: {value['name']}")
@@ -68,6 +85,8 @@ async def main():
             return
         sector = sys.argv[2].lower()
         await test_specific_sector(sector)
+    elif command == "scheduler":
+        test_scheduler()
     else:
         print(f"❌ Unknown command: {command}")
         print_usage()
