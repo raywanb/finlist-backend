@@ -28,16 +28,22 @@ python crawler.py --test --sector healthcare
 
 ### 4. Run Continuous Crawling
 ```bash
-# Run continuous crawling for technology sector (default)
-python crawler.py
+# Run continuous crawling for all sectors (default - 24 hours)
+python crawler.py --all-sectors
+
+# Run continuous crawling for technology sector only
+python crawler.py --sector technology
 
 # Run for specific sector
 python crawler.py --sector healthcare
 
-# Run with custom interval (30 minutes)
-python crawler.py --sector finance --interval 1800
+# Run with custom interval (12 hours)
+python crawler.py --all-sectors --interval 43200
 
-# Run single test cycle
+# Run single test cycle for all sectors
+python crawler.py --test --all-sectors
+
+# Run single test cycle for specific sector
 python crawler.py --test --sector energy
 ```
 
@@ -82,11 +88,29 @@ Everything is contained in one file:
 
 ## 🧪 Testing
 
+### Using the Test Script
+```bash
+# Test all sectors at once
+python test_crawler.py all
+
+# Test single sector (technology)
+python test_crawler.py single
+
+# Test specific sector
+python test_crawler.py sector healthcare
+python test_crawler.py sector finance
+```
+
 ### Test Individual Sectors
 ```bash
 python crawler.py --test --sector technology
 python crawler.py --test --sector healthcare
 python crawler.py --test --sector finance
+```
+
+### Test All Sectors
+```bash
+python crawler.py --test --all-sectors
 ```
 
 ### Test Single Cycle
@@ -95,6 +119,9 @@ python crawler.py --test --sector energy
 ```
 
 ## 🔄 Continuous Operation
+
+### Default Behavior (24-hour intervals)
+The crawler now runs once per day (every 24 hours) and processes all sectors by default.
 
 ### Start Continuous Crawling
 ```bash
@@ -241,4 +268,24 @@ The generated articles are automatically available through your existing API end
 - **Automatic Embeddings**: OpenAI embeddings generated automatically
 - **Duplicate Detection**: Prevents duplicate articles
 - **Error Handling**: Comprehensive error handling and logging
-- **Graceful Shutdown**: Handles Ctrl+C properly 
+- **Graceful Shutdown**: Handles Ctrl+C properly
+- **Multi-Sector Support**: Crawl all sectors or specific sectors
+- **Daily Scheduling**: Runs once per day by default (24-hour intervals)
+- **Sector Rotation**: Processes all sectors in sequence with delays
+- **Test Script**: Easy testing with `test_crawler.py`
+
+## 🆕 New Features (v2.0)
+
+### Daily Crawling Schedule
+- **Default Interval**: Changed from 1 hour to 24 hours (86400 seconds)
+- **All Sectors**: New `--all-sectors` flag to crawl all sectors
+- **Sector Rotation**: Processes each sector with 30-second delays between them
+
+### Enhanced Testing
+- **Test Script**: New `test_crawler.py` for easy testing
+- **All Sectors Test**: Test all sectors at once
+- **Individual Sector Tests**: Test specific sectors
+
+### Docker Updates
+- **Updated Dockerfile**: Now runs with `--all-sectors` by default
+- **24-hour Schedule**: Docker container runs daily instead of hourly 

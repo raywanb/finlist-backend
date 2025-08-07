@@ -87,9 +87,11 @@ def format_prompt(sector: str, topics: str = None, date: str = None) -> str:
 class ArticleCrawler:
     """Simplified web crawler agent using GPT Researcher"""
     
-    def __init__(self, crawl_interval: int = 3600):
+    def __init__(self, crawl_interval: int = 86400):  # Changed default to 24 hours
         self.crawl_interval = crawl_interval
         self.is_running = False
+        self.current_sector_index = 0
+        self.sector_keys = list(SECTORS.keys())
         
     async def crawl_for_articles(self, sector: str = "technology") -> List[Dict[str, Any]]:
         """Use GPT Researcher to crawl for articles based on sector"""
@@ -206,14 +208,52 @@ class ArticleCrawler:
         except Exception as e:
             logger.error(f"Error in crawling cycle: {str(e)}")
     
-    async def start_periodic_crawling(self, sector: str = "technology"):
+    async def run_crawling_cycle_all_sectors(self):
+        """Run crawling cycle for all sectors"""
+        try:
+            logger.info("Starting crawling cycle for all sectors...")
+            total_saved = 0
+            
+            for sector in self.sector_keys:
+                try:
+                    logger.info(f"Processing sector: {sector}")
+                    articles = await self.crawl_for_articles(sector)
+                    
+                    if articles:
+                        saved_count = await self.process_and_save_articles(articles)
+                        total_saved += saved_count
+                        logger.info(f"Saved {saved_count} articles for {sector} sector")
+                    else:
+                        logger.info(f"No articles found for {sector} sector")
+                    
+                    # Add a small delay between sectors to avoid overwhelming the API
+                    await asyncio.sleep(30)
+                    
+                except Exception as e:
+                    logger.error(f"Error processing sector {sector}: {str(e)}")
+                    continue
+            
+            logger.info(f"All sectors crawling complete. Total saved: {total_saved} articles")
+            
+        except Exception as e:
+            logger.error(f"Error in all sectors crawling cycle: {str(e)}")
+    
+    async def start_periodic_crawling(self, sector: str = "technology", all_sectors: bool = False):
         """Start the periodic crawling process"""
         self.is_running = True
-        logger.info(f"Starting periodic crawling for {sector} sector every {self.crawl_interval} seconds")
+        
+        if all_sectors:
+            logger.info(f"Starting periodic crawling for all sectors every {self.crawl_interval} seconds")
+        else:
+            logger.info(f"Starting periodic crawling for {sector} sector every {self.crawl_interval} seconds")
         
         while self.is_running:
             try:
-                await self.run_crawling_cycle(sector)
+                if all_sectors:
+                    await self.run_crawling_cycle_all_sectors()
+                else:
+                    await self.run_crawling_cycle(sector)
+                
                 await asyncio.sleep(self.crawl_interval)
                 
             except asyncio.CancelledError:
@@ -241,11 +281,13 @@ async def main():
     parser = argparse.ArgumentParser(description='Article Crawler with GPT Researcher')
     parser.add_argument('--test', action='store_true', 
                        help='Run a single test cycle instead of continuous crawling')
-    parser.add_argument('--interval', type=int, default=3600,
-                       help='Crawling interval in seconds (default: 3600 = 1 hour)')
+    parser.add_argument('--interval', type=int, default=86400,  # Changed default to 24 hours
+                       help='Crawling interval in seconds (default: 86400 = 24 hours)')
     parser.add_argument('--sector', type=str, default='technology',
                        choices=list(SECTORS.keys()),
                        help='Sector to research (default: technology)')
+    parser.add_argument('--all-sectors', action='store_true',
+                       help='Crawl all sectors instead of just one')
     
     args = parser.parse_args()
     
@@ -262,18 +304,27 @@ async def main():
     signal.signal(signal.SIGTERM, signal_handler)
     
     print("🚀 Article Crawler with GPT Researcher")
-    print(f"📊 Sector: {SECTORS[args.sector]['name']}")
-    print(f"🔍 Topics: {SECTORS[args.sector]['topics']}")
-    print(f"⏰ Crawling interval: {args.interval} seconds")
+    
+    if args.all_sectors:
+        print("📊 Sectors: All sectors")
+        print("🔍 Topics: All predefined topics")
+    else:
+        print(f"📊 Sector: {SECTORS[args.sector]['name']}")
+        print(f"🔍 Topics: {SECTORS[args.sector]['topics']}")
+    
+    print(f"⏰ Crawling interval: {args.interval} seconds ({args.interval // 3600} hours)")
     
     try:
         if args.test:
             print("🧪 Running test cycle...")
-            await crawler.run_crawling_cycle(args.sector)
+            if args.all_sectors:
+                await crawler.run_crawling_cycle_all_sectors()
+            else:
+                await crawler.run_crawling_cycle(args.sector)
             print("✅ Test cycle complete!")
         else:
             print("🔄 Starting continuous crawling...")
-            await crawler.start_periodic_crawling(args.sector)
+            await crawler.start_periodic_crawling(args.sector, args.all_sectors)
             
     except KeyboardInterrupt:
         print("\n🛑 Crawler stopped by user")
