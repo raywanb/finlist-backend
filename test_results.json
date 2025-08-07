@@ -1,0 +1,89 @@
+{
+  "summary": {
+    "passed": 13,
+    "failed": 0,
+    "errors": 0,
+    "total": 13,
+    "success_rate": 100.0
+  },
+  "results": [
+    {
+      "test": "Root Endpoint",
+      "status": "PASS",
+      "details": "Response: Welcome to Stock Analysis API",
+      "timestamp": "2025-08-07 11:59:10"
+    },
+    {
+      "test": "Health Check",
+      "status": "PASS",
+      "details": "Service is healthy",
+      "timestamp": "2025-08-07 11:59:10"
+    },
+    {
+      "test": "Get All Articles",
+      "status": "PASS",
+      "details": "Retrieved 11 articles",
+      "timestamp": "2025-08-07 11:59:11"
+    },
+    {
+      "test": "Get Article by ID",
+      "status": "PASS",
+      "details": "Retrieved article: Tesla Stock Analysis: Q4 2023 Review",
+      "timestamp": "2025-08-07 11:59:11"
+    },
+    {
+      "test": "Get Article by Title",
+      "status": "PASS",
+      "details": "Retrieved article: Tesla Stock Analysis: Q4 2023 Review",
+      "timestamp": "2025-08-07 11:59:12"
+    },
+    {
+      "test": "Search Articles by Title",
+      "status": "PASS",
+      "details": "Found 3 articles with 'Tesla' in title",
+      "timestamp": "2025-08-07 11:59:12"
+    },
+    {
+      "test": "Create Article",
+      "status": "PASS",
+      "details": "Created article with ID: 12",
+      "timestamp": "2025-08-07 11:59:14"
+    },
+    {
+      "test": "Semantic Search",
+      "status": "PASS",
+      "details": "Found 3 relevant articles",
+      "timestamp": "2025-08-07 11:59:16"
+    },
+    {
+      "test": "Hybrid Search",
+      "status": "PASS",
+      "details": "Found 3 technology articles",
+      "timestamp": "2025-08-07 11:59:17"
+    },
+    {
+      "test": "Get Articles by Category",
+      "status": "PASS",
+      "details": "Found 10 technology articles",
+      "timestamp": "2025-08-07 11:59:17"
+    },
+    {
+      "test": "Get Categories",
+      "status": "PASS",
+      "details": "Found categories: Cryptocurrency, Energy, Technology",
+      "timestamp": "2025-08-07 11:59:17"
+    },
+    {
+      "test": "Error Handling",
+      "status": "PASS",
+      "details": "Proper 404 response for non-existent article",
+      "timestamp": "2025-08-07 11:59:17"
+    },
+    {
+      "test": "Response Format",
+      "status": "PASS",
+      "details": "Valid JSON response with proper structure",
+      "timestamp": "2025-08-07 11:59:18"
+    }
+  ]
+}
